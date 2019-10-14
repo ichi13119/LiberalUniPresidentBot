@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'VideoController@index')->name('videos.index');
+Route::get('/videos', 'VideoController@index')->name('videos.index');
+Route::get('/videos/create', 'VideoController@showCreateForm')->name('videos.create');
+Route::post('/videos/create', 'VideoController@create');
+Route::get('/videos/edit/{id}', 'VideoController@showEditForm')->name('videos.edit');

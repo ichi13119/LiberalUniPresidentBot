@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVideosTable extends Migration
+class CreateImportantWordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateVideosTable extends Migration
      */
     public function up()
     {
-        Schema::create('videos', function (Blueprint $table) {
+        Schema::create('important_words', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title', 200); //タイトル（最大全角100文）
-            $table->string('url', 2048); //URL（IEのURL最大文字数2048字）
-            $table->longText('subtitles'); //字幕文字列
+            $table->bigInteger('video_id')->unsigned();
+            $table->foreign('video_id')->references('id')->on('videos');
+            $table->string('word', 50);
+            $table->integer('ranking');
             $table->timestamps();
+
+            //外部制約
         });
     }
 
@@ -29,6 +32,6 @@ class CreateVideosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('videos');
+        Schema::dropIfExists('important_words');
     }
 }
