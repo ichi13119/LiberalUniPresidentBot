@@ -24,6 +24,26 @@ RUN set -eux && \
   apk add --update --no-cache \
     icu-dev \
     libzip-dev && \
+  #Mecabのインストール
+  cd /tmp && \
+  wget "https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE" -O mecab-0.996.tar.gz && \
+  tar zxf mecab-0.996.tar.gz && \
+  cd mecab-0.996 && \
+  ./configure --enable-utf8-only --with-charset=utf8 && \
+  make && \
+  make install && \
+  cd /tmp && \
+  wget "https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7MWVlSDBCSXZMTXM" -O mecab-ipadic-2.7.0-20070801.tar.gz && \
+  tar zxf mecab-ipadic-2.7.0-20070801.tar.gz && \
+  cd mecab-ipadic-2.7.0-20070801 && \
+  ./configure --with-charset=utf8  && \
+  make && \
+  make install && \
+  cd /tmp && \
+  rm -rf \
+    mecab-0.996* \
+    mecab-ipadic-2.7.0-20070801* \
+  #OSの設定
   cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
   echo ${TZ} > /etc/timezone && \
   pecl install xdebug && \
