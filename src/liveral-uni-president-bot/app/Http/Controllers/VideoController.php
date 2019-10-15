@@ -20,7 +20,12 @@ class VideoController extends Controller
 
     public function showCreateForm()
     {
-        return view('videos/create');
+
+        $video = new Video();
+        return view('videos/create',[
+            'url' => route('videos.create'),
+            'video' => $video
+            ]);
     }
 
     public function create(Request $request)
@@ -35,7 +40,21 @@ class VideoController extends Controller
 
     public function showEditForm(int $id)
     {
-        return view('videos/create');
+        $video = Video::find($id);
+        return view('videos/edit', [
+            'url' => route('videos.update', ['id' => $id]),
+            'video' => $video
+            ]);
+    }
+
+    public function update(Request $request,int $id)
+    {
+        $video = Video::find($id);
+        $video->title = $request->title;
+        $video->url = $request->url;
+        $video->subtitles = $request->subtitles;
+        $video->save();
+        return redirect()->route('videos.index');
     }
 
 
