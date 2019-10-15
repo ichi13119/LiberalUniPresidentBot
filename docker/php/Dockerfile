@@ -24,7 +24,7 @@ RUN set -eux && \
   apk add --update --no-cache \
     icu-dev \
     libzip-dev && \
-  #Mecabのインストール
+  #Mecab,ipadic, php-mecabのインストール
   cd /tmp && \
   wget "https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE" -O mecab-0.996.tar.gz && \
   tar zxf mecab-0.996.tar.gz && \
@@ -40,9 +40,17 @@ RUN set -eux && \
   make && \
   make install && \
   cd /tmp && \
+  git clone https://github.com/rsky/php-mecab.git && \
+  cd php-mecab/mecab && \
+  phpize && \
+  ./configure --with-mecab=/usr/local/bin/mecab-config && \
+  make && \
+  make install && \
+  echo 'extension=mecab.so' > /usr/local/etc/php/conf.d/docker-php-ext-mecab.ini && \
   rm -rf \
     mecab-0.996* \
     mecab-ipadic-2.7.0-20070801* \
+    php-mecab && \
   #OSの設定
   cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
   echo ${TZ} > /etc/timezone && \
