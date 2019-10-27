@@ -8,11 +8,13 @@
                 <nav class="panel panel-default">
                     <div class="panel-heading">動画を追加する</div>
                     <div class="panel-body">
-                        @component('videos.form', [
-                            'url' => $url,
-                            'video'=> $video]
-                            )
-                        @endcomponent
+                        <form action="{{ $url }}" method="post">
+                            @csrf
+                            @component('videos.form', [
+                                'video'=> $video]
+                                )
+                            @endcomponent
+                        </form>
                     </div>
                 </nav>
             </div>

@@ -1,6 +1,4 @@
 
-<form action="{{ $url }}" method="post">
-    @csrf
     <div class="form-group">
         <label for="title">タイトル</label>
         <input type="text" class="form-control" name="title" id="title"
@@ -18,4 +16,3 @@
     <div class="text-right">
         <button type="submit" class="btn btn-primary">送信</button>
     </div>
-    </form>

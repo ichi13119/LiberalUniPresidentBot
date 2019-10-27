@@ -17,18 +17,22 @@
                             <th>タイトル</th>
                             <th>Link</th>
                             <th>字幕</th>
-                            <th></th>
                             </tr>
                         </thead>
                         <tbody>
                         @foreach($videos as $video)
                             <tr>
-                            <td>{{ $video->title }}</td>
+                            <td><a href="{{ route('videos.edit', $video) }}">{{ $video->title }}</a></td>
                             <td>
-                                <a href="{{ $video->url }}">Link</a>
+                                <a href="{{ $video->url }}"><i class="fab fa-youtube fa-2x"></i></a>
                             </td>
                             <td><textarea>{{ $video->subtitles }}</textarea></td>
-                            <td><a href="{{ route('videos.edit', ['id' => $video->id]) }}">編集</a></td>
+                            <td>
+                                <form action="{{ route('videos.destroy', $video) }}" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash fa-small"></i></button>
+                                </form>
                             </tr>
                         @endforeach
                         </tbody>
@@ -37,4 +41,4 @@
             </nav>
         </div>
     </div>
-    @endsection
+@endsection

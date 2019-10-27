@@ -18,17 +18,17 @@ class VideoController extends Controller
         //return $subtitles;
     }
 
-    public function showCreateForm()
+    public function create()
     {
 
         $video = new Video();
         return view('videos/create',[
-            'url' => route('videos.create'),
+            'url' => route('videos.store'),
             'video' => $video
             ]);
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $video = new Video();
         $video->title = $request->title;
@@ -38,11 +38,11 @@ class VideoController extends Controller
         return redirect()->route('videos.index');
     }
 
-    public function showEditForm(int $id)
+    public function edit(int $id)
     {
         $video = Video::find($id);
         return view('videos/edit', [
-            'url' => route('videos.update', ['id' => $id]),
+            'url' => route('videos.update', $video),
             'video' => $video
             ]);
     }
@@ -57,5 +57,15 @@ class VideoController extends Controller
         return redirect()->route('videos.index');
     }
 
+    public function destroy(Video $video)
+    {
+        $video->delete();
+        return redirect()->route('videos.index');
+    }
+
+    public function test()
+    {
+        return view('layouts/app');
+    }
 
 }
