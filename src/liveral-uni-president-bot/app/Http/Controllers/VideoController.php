@@ -18,6 +18,14 @@ class VideoController extends Controller
         //return $subtitles;
     }
 
+    public function show(Video $video)
+    {
+
+        return view('videos/show', [
+            'video' => $video
+            ]);
+    }
+
     public function create()
     {
 
@@ -59,6 +67,9 @@ class VideoController extends Controller
 
     public function destroy(Video $video)
     {
+        foreach ($video->importantWords as $importantWord) {
+            $importantWord->delete();
+        }
         $video->delete();
         return redirect()->route('videos.index');
     }
