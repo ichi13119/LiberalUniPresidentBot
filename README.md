@@ -15,3 +15,52 @@
 - 動画:Videos
 - 字幕:Subtitles
 - 重要単語:ImportantWords
+
+## 開発環境構築手順
+```
+** git, dockerのインストールについてはすでに行なっているものとして、書いています。
+
+// 開発環境のディレクトリ作成
+mkdir 作業用ディレクトリ名
+
+// ディレクトリ移動
+cd 作業用ディレクトリ名
+
+// ディレクトリ直下にボット環境をクローン（直下にクローンするために、後ろにコンマがついています。）
+git clone https://github.com/IkumaHayashi/LliberalUniPresidentBot.git .
+
+// ディレクトリ内を確認
+ls -la
+
+// dockerコンテナ作成
+docker-compose up -d
+
+// コンテナに接続
+docker-compose exec app sh
+
+// 現在いるディレクトリを確認(liveral-uni-president-botがあるはずです）
+ls
+
+// liveral-uni-president-botに移動
+cd liveral-uni-president-bot
+
+// phpのパッケージ管理ツールcomposerをインストール
+composer install
+
+// laravelのenvファイル（DBなどの設定が書かれています）を作成します。
+cp .env.example .env
+
+// おまじない（調べてみると色々知れるかも）
+php artisan key:generate
+
+.envのデータベースに関する設定を以下の内容に変更(エディターやvimなどで変更してください)
+DB_DATABASE=liveral-uni
+DB_USERNAME=root
+DB_PASSWORD=root
+
+// データベースを作成（いくまさんがDBの設定ファイルは作成してくださっています）
+php artisan migrate
+
+// あとは、ブラウザに以下のURLを入力すればいけるはずです。
+localhost:10080
+```
