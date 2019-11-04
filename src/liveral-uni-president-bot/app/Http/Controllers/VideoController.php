@@ -14,8 +14,6 @@ class VideoController extends Controller
         return view('videos/index', [
             'videos' => $videos,
         ]);
-        //$subtitles = \SubtitlesExtractingService::extractSubtitlesFromTranscripTtext('https://www.youtube.com/watch?v=fg7ZMuRp5D4');
-        //return $subtitles;
     }
 
     public function show(Video $video)
