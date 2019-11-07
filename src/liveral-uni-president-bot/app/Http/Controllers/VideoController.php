@@ -10,12 +10,9 @@ class VideoController extends Controller
     public function index()
     {
         $videos = Video::all();
-
         return view('videos/index', [
             'videos' => $videos,
         ]);
-        //$subtitles = \SubtitlesExtractingService::extractSubtitlesFromTranscripTtext('https://www.youtube.com/watch?v=fg7ZMuRp5D4');
-        //return $subtitles;
     }
 
     public function show(Video $video)
@@ -74,9 +71,13 @@ class VideoController extends Controller
         return redirect()->route('videos.index');
     }
 
-    public function test()
+    public function calculateIdf()
     {
-        return view('layouts/app');
+        $videos = Video::all();
+        foreach ($videos as $video) {
+            $video->calculateIdf();
+        }
+
     }
 
 }

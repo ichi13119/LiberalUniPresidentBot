@@ -18,7 +18,9 @@ class CreateImportantWordsTable extends Migration
             $table->bigInteger('video_id')->unsigned();
             $table->foreign('video_id')->references('id')->on('videos');
             $table->string('word', 50);
-            $table->integer('ranking');
+            $table->integer('frequency')->default(0);
+            $table->double('tf', 8, 4)->default(0.0);
+            $table->double('idf', 8, 4)->default(0.0);
             $table->timestamps();
 
             //外部制約

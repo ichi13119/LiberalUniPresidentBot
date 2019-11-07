@@ -11,6 +11,11 @@
                             動画を追加する
                         </a>
 
+                        <form action="{{ route('videos.calculateIdf') }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">重要度を計算する</button>
+                        </form>
+
                         <table class="table">
                         <thead>
                             <tr>

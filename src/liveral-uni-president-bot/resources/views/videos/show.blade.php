@@ -26,11 +26,17 @@
                                 <tr>
                                     <th>単語</th>
                                     <th>重要度</th>
+                                    <th>出現頻度</th>
+                                    <th>tf</th>
+                                    <th>idf</th>
                                 </tr>
                                 @forelse ($video->importantWords as $importantWord)
                                 <tr>
-                                    <td>{{$importantWord->word}}</td>
-                                    <td>{{$importantWord->ranking}}</td>
+                                    <td>{{$importantWord->word}}&nbsp;</td>
+                                    <td>{{$importantWord->tf * ( $importantWord->idf + 1.0 )}}&nbsp;</td>
+                                    <td>{{$importantWord->frequency}}&nbsp;</td>
+                                    <td>{{$importantWord->tf}}&nbsp;</td>
+                                    <td>{{$importantWord->idf}}&nbsp;</td>
                                 </tr>
                                 @empty
                                     解析が終わってません

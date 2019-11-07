@@ -12,6 +12,7 @@
 */
 Route::get('/', 'VideoController@index')->name('videos.index');
 Route::resource('videos', 'VideoController');
+Route::post('/videos/calculateIdf', 'VideoController@calculateIdf')->name('videos.calculateIdf');
 /*
 Route::get('/videos', 'VideoController@index')->name('videos.index');
 Route::get('/videos/create', 'VideoController@showCreateForm')->name('videos.create');
