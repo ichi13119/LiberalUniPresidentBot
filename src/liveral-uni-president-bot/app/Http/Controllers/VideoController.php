@@ -10,7 +10,6 @@ class VideoController extends Controller
     public function index()
     {
         $videos = Video::all();
-
         return view('videos/index', [
             'videos' => $videos,
         ]);
@@ -72,9 +71,13 @@ class VideoController extends Controller
         return redirect()->route('videos.index');
     }
 
-    public function test()
+    public function calculateIdf()
     {
-        return view('layouts/app');
+        $videos = Video::all();
+        foreach ($videos as $video) {
+            $video->calculateIdf();
+        }
+
     }
 
 }

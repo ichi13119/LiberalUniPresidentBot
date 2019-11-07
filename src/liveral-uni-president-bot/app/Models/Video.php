@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 class Video extends Model
 {
@@ -12,39 +13,87 @@ class Video extends Model
         return $this->hasMany('App\Models\ImportantWord');
     }
 
+    /**
+     * subtitle getter
+     * 時刻文字列と改行を削除して返す
+     *
+     * @param [type] $value
+     * @return string
+     */
+    public function getSubtitlesAttribute($value) : string
+    {
+        return preg_replace('/(\d{2}:\d{2})(\n|\r\n|\r)/', '', $value);
+    }
 
     public function setImportantWords()
     {
 
+        Log::debug('setImportantWords');
         //現在挿入されているレコードを削除
         $this->importantWords()->delete();
 
-        //重要度を算出
-        $words = $this->generateImportantWords();
+        //名詞の抽出と重要度の算出
+        $frequencyAndTfs =  $this->generateFrequencyAndTfs();
+        Log::debug($frequencyAndTfs);
 
         //DBに保存
-        foreach ($words as $key => $ranking) {
+        foreach ($frequencyAndTfs as $key => $frequencyAndTf) {
             $importantWord = new \App\Models\ImportantWord();
             $importantWord->word = $key;
-            $importantWord->ranking = $ranking;
+            $importantWord->tf = $frequencyAndTf['tf'];
+            $importantWord->frequency = $frequencyAndTf['frequency'];
             $this->importantWords()->save($importantWord);
         }
 
     }
 
+    public function calculateIdf()
+    {
+        Log::debug('calculateIdf');
+        $videos = Video::all();
+        $importantWords = $this->importantWords()->get();
+
+        foreach ($importantWords as $importantWord) {
+            Log::debug($importantWord->word);
+            $hasVideoCount = 0;
+
+            foreach ($videos as $video) {
+                if($video->hasImportantWord($importantWord->word))
+                    $hasVideoCount++;
+            }
+
+            $idf = $hasVideoCount > 0 ? log10(count($videos) / $hasVideoCount) : log10(0);
+            $importantWord->idf = $idf;
+            $importantWord->save();
+            Log::debug('idf = '.count($videos)." / $hasVideoCount");
+
+        }
+    }
+
+    public function hasImportantWord($word) : bool
+    {
+        foreach ($this->importantWords()->get() as $importantWord) {
+            if($importantWord->word == $word)
+                return true;
+        }
+        return false;
+    }
+
+
     /**
-     *  字幕から重要単語を算出する
+     * 字幕から単名詞、複合名詞を抽出する
      *
-     * @return void
+     * @return array 抽出した単名詞、複合名詞
      */
-    public function generateImportantWords(){
+    private function generateFrequencyAndTfs() : array
+    {
 
         //文字列を解析
-        $this->subtitles = preg_replace('/(\d{2}:\d{2})(\n|\r\n|\r)/', '',$this->subtitles);
         $mecab = new \Mecab\Tagger();
         $nodes = $mecab->parseToNode($this->subtitles);
 
         //形態素ごとに名詞かどうか、重要度はいくつかを算出
+        $allWords = array();
         $words = array();
         $compoundNoun = '';
 
@@ -56,12 +105,14 @@ class Video extends Model
             if($n->getSurface() == '')
                 continue;
 
+            //全単語の頻出回数を記録
+            $this->incrementFrequency($allWords, $n->getSurface());
+
             //名詞ではない かつ 前も名詞ではない場合はスキップ
             if($compoundNoun == '' && $result[0] != '名詞'){
-                $compoundNoun = '';
                 continue;
 
-            //名詞ではない かつ 複合名詞が空でない場合は、単語の区切りとしてカウント
+            //名詞ではない かつ 複合名詞が空でない場合は、複合名詞としてカウント
             }else if($compoundNoun != '' && $result[0] != '名詞'){
 
                 //ひらがな１文字は除外する
@@ -70,29 +121,45 @@ class Video extends Model
                     continue;
                 }
 
-                //単語を格納
-                if(empty($words[$compoundNoun])){
-                    $words[$compoundNoun] = 1;
-                }else{
-                    $words[$compoundNoun]++;
+                //複合名詞がまだ単名詞の場合は除外する
+                if($compoundNoun == $n->getSurface()){
+                    $compoundNoun = '';
+                    continue;
                 }
 
+                //複合名詞を格納
+                $this->incrementFrequency($words, $compoundNoun);
                 $compoundNoun = '';
-                continue;
 
-            //名詞 かつ 複合名詞の場合は、複合名詞として結合する
+            //名詞 かつ 前の形態素も名詞の場合
             }else if($compoundNoun != '' && $result[0] == '名詞'){
+
+                //前の名詞と複合名詞が一致する場合、前の名詞を単名詞としてカウント
+                if($compoundNoun == $n->getPrev()->getSurface()){
+                    $this->incrementFrequency($words, $n->getPrev()->getSurface());
+                }
+
+                $this->incrementFrequency($words, $n->getSurface());
                 $compoundNoun .= $n->getSurface();
 
-            //名詞の場合、複合名詞として一旦格納
+            //名詞 かつ 最初の出現の場合
             }else{
                 $compoundNoun .= $n->getSurface();
             }
-
         }
 
-        arsort($words);
+        $frequencyAndTfs = array();
+        $sumFrequency = array_sum($allWords);
+        foreach ($words as $word => $value) {
+            $frequencyAndTfs[$word] = ['frequency'=> $value
+                                       , 'tf' => $value / $sumFrequency];
+        }
 
-        return $words;
+        return $frequencyAndTfs;
+    }
+
+    private function incrementFrequency(&$words, $word)
+    {
+        isset($words[$word]) ? $words[$word]++ : $words[$word] = 1;
     }
 }
