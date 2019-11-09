@@ -10,7 +10,7 @@ class Video extends Model
     //
     public function importantWords()
     {
-        return $this->hasMany('App\Models\ImportantWord');
+        return $this->hasMany('App\Models\ImportantWord')->orderByDesc('tfidf');
     }
 
     /**
@@ -28,7 +28,6 @@ class Video extends Model
     public function setImportantWords()
     {
 
-        Log::debug('setImportantWords');
         //現在挿入されているレコードを削除
         $this->importantWords()->delete();
 

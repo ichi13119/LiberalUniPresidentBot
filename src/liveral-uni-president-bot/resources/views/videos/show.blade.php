@@ -33,7 +33,7 @@
                                 @forelse ($video->importantWords as $importantWord)
                                 <tr>
                                     <td>{{$importantWord->word}}&nbsp;</td>
-                                    <td>{{$importantWord->tf * ( $importantWord->idf + 1.0 )}}&nbsp;</td>
+                                    <td>{{$importantWord->tfidf}}&nbsp;</td>
                                     <td>{{$importantWord->frequency}}&nbsp;</td>
                                     <td>{{$importantWord->tf}}&nbsp;</td>
                                     <td>{{$importantWord->idf}}&nbsp;</td>
