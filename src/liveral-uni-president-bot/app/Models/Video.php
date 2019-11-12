@@ -13,6 +13,21 @@ class Video extends Model
         return $this->hasMany('App\Models\ImportantWord')->orderByDesc('tfidf');
     }
 
+    public function isTopImportantWord($word, $thresholdNumber)
+    {
+        $topImportantWords = $this->importantWords()
+                            ->take($thresholdNumber)
+                            ->select('word')
+                            ->get();
+
+        foreach ($topImportantWords as $importantWord) {
+            if($importantWord->word === $word)
+                return true;
+        }
+        return false;
+
+    }
+
     /**
      * subtitle getter
      * 時刻文字列と改行を削除して返す

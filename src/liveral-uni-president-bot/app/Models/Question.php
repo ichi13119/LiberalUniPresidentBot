@@ -28,27 +28,35 @@ class Question extends Model
         $questionWords = [];
         foreach ($nodes as $node) {
 
+            //名詞以外はスキップ
             $result = explode(',', $node->getFeature());
             if($result[0] != '名詞')
                 continue;
 
+            //一致する重要語を抽出
             $word = $node->getSurface();
-
             $importantWords = ImportantWord::where('word', $word)
                                 ->orderByDesc('tfidf')
-                                ->take(5)->get();
+                                ->get();
 
+            //一致しなければ抜ける
             if(count($importantWords) == 0){
                 continue;
-            }else{
-                $questionWords[] = $word;
             }
 
+            //各重要単語の動画を取得し、TOP5以内のtfidfでなければ除外する
             foreach ($importantWords as $importantWord) {
                 $video = $importantWord->video;
-                if(!in_array($video, $recomendVideos, true)){
-                    $recomendVideos[] = $video;
+
+                if(!$video->isTopImportantWord($word, 5)){
+                    continue;
                 }
+
+                $recomendVideos[$video->id] = $video;
+                if(!in_array($word, $questionWords, true)){
+                    array_push($questionWords, $word);
+                }
+
             }
         }
 
@@ -57,7 +65,7 @@ class Question extends Model
         if(count($questionWords) == 0){
             $answer = 'ごめんな、ちょうどいい動画見つからんかったわ！';
         }else{
-            $answer = '君は'.implode('と', $questionWords).'について知りたいんやな。'.PHP_EOL;
+            $answer = '君は【'.implode('】と【', $questionWords).'】について知りたいんやな。'.PHP_EOL;
             $answer .= 'そんな君におすすめの動画はこれや！'.PHP_EOL;
             foreach ($recomendVideos as $video) {
                 $answer .= $video->title.PHP_EOL;
