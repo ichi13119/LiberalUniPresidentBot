@@ -10,7 +10,22 @@ class Video extends Model
     //
     public function importantWords()
     {
-        return $this->hasMany('App\Models\ImportantWord');
+        return $this->hasMany('App\Models\ImportantWord')->orderByDesc('tfidf');
+    }
+
+    public function isTopImportantWord($word, $thresholdNumber)
+    {
+        $topImportantWords = $this->importantWords()
+                            ->take($thresholdNumber)
+                            ->select('word')
+                            ->get();
+
+        foreach ($topImportantWords as $importantWord) {
+            if($importantWord->word === $word)
+                return true;
+        }
+        return false;
+
     }
 
     /**
@@ -28,7 +43,6 @@ class Video extends Model
     public function setImportantWords()
     {
 
-        Log::debug('setImportantWords');
         //現在挿入されているレコードを削除
         $this->importantWords()->delete();
 

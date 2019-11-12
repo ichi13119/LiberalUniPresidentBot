@@ -77,6 +77,7 @@ class VideoController extends Controller
         foreach ($videos as $video) {
             $video->calculateIdf();
         }
+        return redirect()->route('videos.index');
 
     }
 
