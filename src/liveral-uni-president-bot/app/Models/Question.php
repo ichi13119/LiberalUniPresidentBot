@@ -10,12 +10,10 @@ class Question extends Model
 
     const UPDATED_AT = null;
 
-    public function __construct($question)
+    public function setQuestion($question)
     {
         $this->question = $question;
-        $this->answer = $this->setAnswer();
     }
-
     public function setAnswer()
     {
 
@@ -74,7 +72,7 @@ class Question extends Model
             $answer .= '知識マッチョ目指して頑張ろな^^'.PHP_EOL;
         }
 
-        return $answer;
+        $this->answer = $answer;
     }
 
 }
