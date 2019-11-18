@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Video;
+use App\Jobs\CalculateIdfJob;
+use Log;
+use Illuminate\Support\Facades\Redis;
 
 class VideoController extends Controller
 {
@@ -73,10 +76,7 @@ class VideoController extends Controller
 
     public function calculateIdf()
     {
-        $videos = Video::all();
-        foreach ($videos as $video) {
-            $video->calculateIdf();
-        }
+        CalculateIdfJob::dispatch();
         return redirect()->route('videos.index');
 
     }
