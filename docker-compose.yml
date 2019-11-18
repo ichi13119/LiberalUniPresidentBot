@@ -21,6 +21,10 @@ services:
       - TZ=${TZ}
       - MAIL_HOST=${MAIL_HOST}
       - MAIL_PORT=${MAIL_PORT}
+      - CACHE_DRIVER=redis
+      - SESSION_DRIVER=redis
+      - QUEUE_DRIVER=redis
+      - REDIS_HOST=redis
 
   web:
     image: nginx:1.17-alpine
@@ -50,5 +54,11 @@ services:
     ports:
       - ${DB_PORT}:3306
       
+  redis:
+    image: redis:5.0-alpine
+    volumes:
+      - redis-store:/data
+      
 volumes:
   db-store:
+  redis-store:

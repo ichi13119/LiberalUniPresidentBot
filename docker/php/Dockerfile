@@ -41,6 +41,7 @@ RUN set -eux && \
   make install && \
   cd /tmp && \
   git clone https://github.com/rsky/php-mecab.git && \
+  git clone https://github.com/phpredis/phpredis.git /usr/src/php/ext/redis && \
   cd php-mecab/mecab && \
   phpize && \
   ./configure --with-mecab=/usr/local/bin/mecab-config && \
@@ -56,7 +57,7 @@ RUN set -eux && \
   echo ${TZ} > /etc/timezone && \
   pecl install xdebug && \
   apk del .build-dependencies && \
-  docker-php-ext-install intl pdo_mysql mbstring zip bcmath && \
+  docker-php-ext-install intl pdo_mysql mbstring zip bcmath redis && \
   docker-php-ext-enable xdebug && \
   mkdir $PSYSH_DIR && wget $PHP_MANUAL_URL -P $PSYSH_DIR && \
   curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
