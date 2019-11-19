@@ -12,6 +12,7 @@
 */
 Route::get('/', 'VideoController@index')->name('videos.index');
 Route::resource('videos', 'VideoController');
+Route::get('/api/youtube/getVideoInformation', 'Api\YoutubeController@getVideoInformation');
 Route::post('/videos/calculateIdf', 'VideoController@calculateIdf')->name('videos.calculateIdf');
 
 /*
