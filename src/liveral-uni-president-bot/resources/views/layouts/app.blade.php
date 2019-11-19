@@ -7,6 +7,7 @@
   <title>@yield('title') - {{ config('app.name') }}</title>
   <link rel="stylesheet" href="/css/styles.css">
   <script src="https://kit.fontawesome.com/d48d70bdc6.js" crossorigin="anonymous"></script>
+  <script src="{{asset('/assets/js/jquery-3.4.1.min.js')}}"></script>
 </head>
 <body>
   <header>

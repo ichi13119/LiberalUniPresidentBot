@@ -27,7 +27,7 @@ mkdir 作業用ディレクトリ名
 cd 作業用ディレクトリ名
 
 // ディレクトリ直下にボット環境をクローン（直下にクローンするために、後ろにコンマがついています。）
-git clone https://github.com/IkumaHayashi/LliberalUniPresidentBot.git .
+git clone https://github.com/IkumaHayashi/LiberalUniPresidentBot.git .
 
 // ディレクトリ内を確認
 ls -la
@@ -54,13 +54,19 @@ cp .env.example .env
 php artisan key:generate
 
 .envのデータベースに関する設定を以下の内容に変更(エディターやvimなどで変更してください)
-DB_DATABASE=liveral-uni
 DB_USERNAME=root
 DB_PASSWORD=root
 
-// データベースを作成（いくまさんがDBの設定ファイルは作成してくださっています）
+また、YoutubeのURLを指定することでタイトルやサムネイルを表示するようにしています。
+利用にあたり、YoutubeのAccessKeyが必要になりますので、下記ページを参考の上取得してください。
+https://qiita.com/chieeeeno/items/ba0d2fb0a45db786746f
+
+取得したら.envの下記項目に記載してください。
+YOUTUBE_ACCESS_KEY=
+
+// データベースを作成
 php artisan migrate
 
-// あとは、ブラウザに以下のURLを入力すればいけるはずです。
+// 動作確認
 localhost:10080
 ```

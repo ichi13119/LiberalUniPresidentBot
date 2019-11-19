@@ -1,13 +1,17 @@
 
     <div class="form-group">
-        <label for="title">タイトル</label>
-        <input type="text" class="form-control" name="title" id="title"
-                value="{{ $video->title }}"/>
-    </div>
-    <div class="form-group">
         <label for="url">URL</label>
         <input type="text" class="form-control" name="url" id="url"
                 value="{{ $video->url }}"/>
+    </div>
+    <div class="form-group">
+        <label for="title">タイトル</label>
+        <input type="text" readonly class="form-control" name="title" id="title"
+                value="{{ $video->title }}"/>
+    </div>
+    <div class="form-group">
+        <div id="thumbnail">
+        </div>
     </div>
     <div class="form-group">
         <label for="subtitles">字幕</label>
