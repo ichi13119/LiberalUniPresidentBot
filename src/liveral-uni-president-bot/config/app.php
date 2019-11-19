@@ -228,4 +228,7 @@ return [
 
     ],
 
+    //YoutuebAPIアクセスキー
+    'youtube_access_key' => env('YOUTUBE_ACCESS_KEY', ''),
+
 ];
