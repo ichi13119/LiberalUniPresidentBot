@@ -15,6 +15,7 @@
 - 動画:Videos
 - 字幕:Subtitles
 - 重要単語:ImportantWords
+- 自己紹介ホワイトリスト:Whitelists
 
 ## 開発環境構築手順
 ```
