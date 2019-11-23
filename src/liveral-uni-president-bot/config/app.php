@@ -230,4 +230,9 @@ return [
 
     //Youtubeのビデオ情報取得用アクセスキー
     'youtube_access_key' => env('YOUTUBE_ACCESS_KEY'),
+
+    //リベラルアーツ大学 ChatWork
+    'api_token' => env('API_TOKEN', ''),
+    'webhook_token' => env('WEBHOOK_TOKEN', ''),
+    'test_room_id' => env('TEST_ROOM_ID', ''),
 ];

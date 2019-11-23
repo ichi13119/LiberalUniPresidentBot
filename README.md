@@ -69,4 +69,27 @@ php artisan migrate
 
 // 動作確認
 localhost:10080
+
+// botくん 自己紹介していない または プロフィール写真未設定時の
+// リプライ動作確認は次のリポジトリのREADME.mdに従って
+// .env の API_TOKEN  WEBHOOK_TOKEN  TEST_ROOM_ID　を設定してください。
+https://github.com/hitoshi-kakihana/chatwork_bot_laravel
+```
+
+## 本番環境
+```
+// ホストOSで crontab 設定　(botくんリプライチェックを毎分実行)
+crontab -e
+* * * * * docker-compose exec app /bin/sh -c "cd /work/liveral-uni-president-bot && php artisan schedule:run >> /dev/null 2>&1"
+
+// .env を編集
+APP_ENV=production
+API_TOKEN="本番専用のtokenを記入"
+WEBHOOK_TOKEN="本番専用のtokenを記入"
+TEST_ROOM_ID=""
+
+// 自己紹介プレッドシートの「ホワイトリスト」に登録されている、
+// ユーザーIDを DB の whitelistsテーブルのaccount_idカラムに全てINSERTしてください 
+// （本番反映初回だけ必要な作業）
+https://docs.google.com/spreadsheets/d/1QBosbUraW5sgDeKtJWcusfd_J15T2Htz5KN5KbauoHk/edit#gid=1820809320
 ```
