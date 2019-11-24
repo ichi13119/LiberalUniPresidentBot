@@ -12,13 +12,13 @@ class SelfIntroController extends Controller
     public function webhook(Request $request)
     {
         if ($this->validationSignature($request) === false) return false;
-        $is_whitelist = LiberalCommunityUser::where('account_id', $request->input('webhook_event.account_id'))->count() > 0;
-        if (!$is_whitelist) {
-            $whitelist = new LiberalCommunityUser;
-            $whitelist->account_id = $request->input('webhook_event.account_id');
-            $whitelist->other = json_encode($request->all(), true);
-            $whitelist->save();
-            \Log::debug('SUCCESS WEBHOOK ADD WHITELIST', [$request->all()]);
+        $is_liberal_community_user = LiberalCommunityUser::where('account_id', $request->input('webhook_event.account_id'))->count() > 0;
+        if (!$is_liberal_community_user) {
+            $liberal_community_user = new LiberalCommunityUser;
+            $liberal_community_user->account_id = $request->input('webhook_event.account_id');
+            $liberal_community_user->other = json_encode($request->all(), true);
+            $liberal_community_user->save();
+            \Log::debug('SUCCESS WEBHOOK ADD LiberalCommunityUser', [$request->all()]);
         } else {
             \Log::debug('SUCCESS WEBHOOK', [$request->all()]);
         }

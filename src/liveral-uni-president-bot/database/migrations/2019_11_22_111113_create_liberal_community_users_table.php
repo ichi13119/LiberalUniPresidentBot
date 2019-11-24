@@ -29,6 +29,6 @@ class CreateLiberalCommunityUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('whitelists');
+        Schema::dropIfExists('liberal_community_users');
     }
 }

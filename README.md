@@ -15,7 +15,7 @@
 - 動画:Videos
 - 字幕:Subtitles
 - 重要単語:ImportantWords
-- 自己紹介ホワイトリスト:Whitelists
+- リベラルアーツ大学Chatworkユーザー:LiberalCommunityUser
 
 ## 開発環境構築手順
 ```
@@ -90,7 +90,7 @@ WEBHOOK_TOKEN="本番専用のtokenを記入"
 TEST_ROOM_ID=""
 
 // 自己紹介プレッドシートの「ホワイトリスト」に登録されている、
-// ユーザーIDを DB の whitelistsテーブルのaccount_idカラムに全てINSERTしてください 
+// ユーザーIDを DB の liberal_community_usersテーブルのaccount_idカラムに全てINSERTしてください 
 // （本番反映初回だけ必要な作業）
 https://docs.google.com/spreadsheets/d/1QBosbUraW5sgDeKtJWcusfd_J15T2Htz5KN5KbauoHk/edit#gid=1820809320
 ```

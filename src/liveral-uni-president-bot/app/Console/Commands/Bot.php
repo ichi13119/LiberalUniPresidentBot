@@ -38,9 +38,9 @@ class Bot extends Command
             foreach ((array)$chatwork_api->getMessages($room['room_id']) as $message) {
                 $postMessageCase = [];
 
-                // 自己紹介していない時 $is_whitelist = false
-                $is_whitelist = LiberalCommunityUser::where('account_id', $message['account']['account_id'])->count() > 0;
-                if (!$is_whitelist) $postMessageCase = array_merge($postMessageCase, ['addSelfInfoMessage']);
+                // 自己紹介していない時 $is_liberal_community_user = false
+                $is_liberal_community_user = LiberalCommunityUser::where('account_id', $message['account']['account_id'])->count() > 0;
+                if (!$is_liberal_community_user) $postMessageCase = array_merge($postMessageCase, ['addSelfInfoMessage']);
 
                 // プロフィール写真未設定の時 $is_default_avatar_image = true
                 $avatar_image_url = $message['account']['avatar_image_url'];
@@ -49,7 +49,7 @@ class Bot extends Command
                 if ($is_default_avatar_image) $postMessageCase = array_merge($postMessageCase, ['addProfileMessage']);
 
                 // 自己紹介していない　または　プロフィール写真未設定 アカウントの時 BOTくんがリプライする
-                if ((!$is_whitelist || $is_default_avatar_image) && !in_array($message['account']['account_id'], $complete_bot_reply, true)) {
+                if ((!$is_liberal_community_user || $is_default_avatar_image) && !in_array($message['account']['account_id'], $complete_bot_reply, true)) {
                     $account_id = $message['account']['account_id'];
                     $room_id = $room['room_id'];
                     $message_id = $message['message_id'];
