@@ -90,40 +90,4 @@ class ChatWorkApi
         // メッセージ記法 : http://developer.chatwork.com/ja/messagenotation.html
         return "[rp aid=$account_id to=$room_id-$message_id][piconname:$account_id]さん[info][title]" . $title . "[/title]" . $message . "[/info]";
     }
-
-    /**
-     * 送信するメッセージ取得
-     * @param array $case
-     * @return string
-     */
-    public function getPostMessage($case)
-    {
-        $message = [];
-        if (in_array('addProfileMessage', $case, true)) {
-            $message = array_merge($message, [
-                    <<<EOF
-ガイドラインは必ず最後まで
-目を通してな^ ^
-最低限のルールや。
-プロフ設定についても書いてるで〜
-https://liberaluni.com/yuru-community-precautions#2
-EOF
-                ]
-            );
-        }
-
-        if (in_array('addSelfInfoMessage', $case, true)) {
-            $message = array_merge($message, [
-                    <<<EOF
-自己紹介チャット退室済みの人は
-再度書き込みをお願いします〜
-●自己紹介チャット
-https://www.chatwork.com/g/larts-list
-EOF
-                ]
-            );
-        }
-
-        return implode($message, "\n\n");
-    }
 }

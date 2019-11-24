@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //自己紹介未完了 または プロフィール写真未設定 は BOTがリプライ
-        $schedule->command('liveral:bot')->everyMinute();
+        $schedule->command('liberal:bot')->everyMinute();
     }
 
     /**
