@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWhitelistsTable extends Migration
+class CreateLiberalCommunityUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateWhitelistsTable extends Migration
      */
     public function up()
     {
-        Schema::create('whitelists', function (Blueprint $table) {
+        Schema::create('liberal_community_users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('account_id')->unique();
             $table->json('other');

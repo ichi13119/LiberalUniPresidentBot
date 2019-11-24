@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App;
 use App\ChatWorkApi;
-use App\Models\Whitelist;
+use App\Models\LiberalCommunityUser;
 use Illuminate\Console\Command;
 
 class Bot extends Command
@@ -39,7 +39,7 @@ class Bot extends Command
                 $postMessageCase = [];
 
                 // 自己紹介していない時 $is_whitelist = false
-                $is_whitelist = Whitelist::where('account_id', $message['account']['account_id'])->count() > 0;
+                $is_whitelist = LiberalCommunityUser::where('account_id', $message['account']['account_id'])->count() > 0;
                 if (!$is_whitelist) $postMessageCase = array_merge($postMessageCase, ['addSelfInfoMessage']);
 
                 // プロフィール写真未設定の時 $is_default_avatar_image = true

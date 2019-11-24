@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Whitelist;
+use App\Models\LiberalCommunityUser;
 
 class SelfIntroController extends Controller
 {
@@ -12,9 +12,9 @@ class SelfIntroController extends Controller
     public function webhook(Request $request)
     {
         if ($this->validationSignature($request) === false) return false;
-        $is_whitelist = Whitelist::where('account_id', $request->input('webhook_event.account_id'))->count() > 0;
+        $is_whitelist = LiberalCommunityUser::where('account_id', $request->input('webhook_event.account_id'))->count() > 0;
         if (!$is_whitelist) {
-            $whitelist = new Whitelist;
+            $whitelist = new LiberalCommunityUser;
             $whitelist->account_id = $request->input('webhook_event.account_id');
             $whitelist->other = json_encode($request->all(), true);
             $whitelist->save();
