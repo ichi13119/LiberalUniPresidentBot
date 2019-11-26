@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        //自己紹介未完了 または プロフィール写真未設定 は BOTがリプライ
+        $schedule->command('liberal:bot')->everyMinute();
     }
 
     /**

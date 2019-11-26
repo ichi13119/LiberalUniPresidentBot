@@ -1,5 +1,5 @@
 FROM php:7.3-fpm-alpine
-LABEL maintainer "ikuma"
+LABEL maintainer="ikuma"
 
 # tinker(psysh)
 ARG PSYSH_DIR=/usr/local/share/psysh
