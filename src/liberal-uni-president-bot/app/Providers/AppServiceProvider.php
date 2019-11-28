@@ -26,5 +26,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Video::observe(VideoObserver::class);
+        if (request()->isSecure()) {
+            \URL::forceScheme('https');
+        }
     }
 }
