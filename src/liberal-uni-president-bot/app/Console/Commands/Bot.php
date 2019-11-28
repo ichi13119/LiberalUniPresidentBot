@@ -30,9 +30,11 @@ class Bot extends Command
                 // 本番環境ではリプライを行わないルームの場合スキップする
                 if (in_array($room['room_id'], $skip_room_id, true)) continue;
             } else if (App::environment('local')) {
-                // 開発環境ではテストを行う1つのルームにしかリプライしない(本番環境に対してご動作を防ぐ対応）
+                // 開発環境ではテストを行う1つのルームにしかリプライしない(本番環境に対して誤動作を防ぐ対応）
                 if ($room['room_id'] != config('app.test_room_id')) continue;
             }
+
+            if($room['type'] != 'group') continue;
 
             $complete_bot_reply = [];
             foreach ((array)$chatwork_api->getMessages($room['room_id']) as $message) {

@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
     {
         //自己紹介未完了 または プロフィール写真未設定 は BOTがリプライ
         $schedule->command('liberal:bot')->everyMinute();
+        $schedule->command('liberal:updateLiberalCommunityRooms')->everyMinute();
     }
 
     /**
