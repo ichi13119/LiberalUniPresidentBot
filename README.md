@@ -39,11 +39,11 @@ docker-compose up -d
 // コンテナに接続
 docker-compose exec app sh
 
-// 現在いるディレクトリを確認(liveral-uni-president-botがあるはずです）
+// 現在いるディレクトリを確認(liberal-uni-president-botがあるはずです）
 ls
 
-// liveral-uni-president-botに移動
-cd liveral-uni-president-bot
+// liberal-uni-president-botに移動
+cd liberal-uni-president-bot
 
 // phpのパッケージ管理ツールcomposerをインストール
 composer install
@@ -81,13 +81,16 @@ https://github.com/hitoshi-kakihana/chatwork_bot_laravel
 ```
 // ホストOSで crontab 設定　(botくんリプライチェックを毎分実行)
 crontab -e
-* * * * * docker-compose exec app /bin/sh -c "cd /work/liveral-uni-president-bot && php artisan schedule:run >> /dev/null 2>&1"
+* * * * * docker-compose exec app /bin/sh -c "cd /work/liberal-uni-president-bot && php artisan schedule:run >> /dev/null 2>&1"
 
 // .env を編集
 APP_ENV=production
 API_TOKEN="本番専用のtokenを記入"
 WEBHOOK_TOKEN="本番専用のtokenを記入"
 TEST_ROOM_ID=""
+
+// キャッシュをクリア
+php artisan config:clear
 
 // 自己紹介プレッドシートの「ホワイトリスト」に登録されている、
 // ユーザーIDを DB の liberal_community_usersテーブルのaccount_idカラムに全てINSERTしてください 
