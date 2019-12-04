@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\LiberalCommunityRooms::class,
+        Commands\InitLiberalCommunityUsers::class,
+        Commands\UpdateLiberalCommunityUsers::class,
     ];
 
     /**
